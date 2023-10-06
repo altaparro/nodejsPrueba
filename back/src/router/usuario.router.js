@@ -1,83 +1,22 @@
-const router2 = require("express").Router()
+const usuarioRouter = require("express").Router()
 const { faker } = require("@faker-js/faker")
 const Usuarios = require("../model/usuario.model");
+const usuariosController = require('../controllers/usuario.controllers'); 
 const { request } = require("express");
 
-router2.get("/usuarios", async (req, res) => {
-    const usuarios = await Usuarios.findAll()
-    res.status(200).json({
-        ok: true,
-        status: 200,
-        body: usuarios
-    })
-});
 
-router2.get("/usuarios/:usuario_id", async (req, res) => {
-    const id = req.params.usuario_id;
-    const usuario = await Usuarios.findOne({
-        where: {
-           usuario_id: id,
-        }
-    })
-    res.status(200).json({
-        ok: true,
-        status: 200,
-        body: usuario
-    })
-});
 
-router2.post("/usuarios", async(req, res) => {
-    const dataUsuarios = req.body
-    await Usuarios.sync()
-    const createUsuario = await Usuarios.create({
-        usuario: dataUsuarios.usuario,
-        contraseña: dataUsuarios.contraseña,
-        email: dataUsuarios.email,
-    })
-    res.status(201).json({
-        ok: true,
-        status: 201,
-        message: "usuario cargado",
-    })
 
-});
+usuarioRouter.get("/usuarios/:usuario_id", usuariosController.obtenerTodosLosUsuarios);
 
-router2.put("/usuarios/:usuario_id", async (req, res) => {
-    const id = req.params.usuario_id;
-    const dataUsuarios = req.body;
-    const updateUsuario = await Usuarios.update(
-        {
-            usuario: dataUsuarios.usuario,
-            contraseña: dataUsuarios.contraseña,
-            email: dataUsuarios.email,
-    }, 
-    {
-        where: {
-           usuario_id: id 
-        },
-    }
-    );
-    res.status(200).json({
-        ok: true,
-        status: 200,
-        body: updateUsuario
-    })
-});
+usuarioRouter.get("/usuarios/:usuario_id", usuariosController.obtenerUsuarioPorID);
 
-router2.patch
+usuarioRouter.post("/usuarios", usuariosController.crearUsuario);
 
-router2.delete("/usuarios/:usuario_id", async (req, res) => {
-    const id= req.params.usuario_id;
-    const deleteUsuario = await Usuarios.destroy({
-        where: {
-            usuario_id: id,
-        }
-    });
-    res.status(200).json({
-        ok: true,
-        status: 204,
-        body: deleteUsuario,
-    })
-});
+usuarioRouter.post("/usuarios", usuariosController.actualizarUsuario);
 
-module.exports = router2; // ver si hay que poner router2
+// router2.patch    faltaria hacer un patch
+
+usuarioRouter.post("/usuarios", usuariosController.eliminarUsuario);
+
+module.exports = usuarioRouter;
