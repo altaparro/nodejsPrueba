@@ -1,5 +1,7 @@
 const { Sequelize, Model, DataTypes } = require("sequelize");
 
+const bcrypt = require('bcrypt');
+
 const sequelize = new Sequelize("product_test", "root", "", {
   host: "localhost",
   dialect: "mysql",
@@ -20,7 +22,7 @@ Usuario.init(
       type: DataTypes.STRING,
       allowNull: false, // no puede ser nulo
     },
-    contraseña: {
+    password: {
       type: DataTypes.STRING,
       allowNull: false, // no puede ser nulo
     },
@@ -36,6 +38,8 @@ Usuario.init(
   }
 );
 
+
+
 module.exports = Usuario;
 
 // testeando la conexion:
@@ -50,3 +54,4 @@ module.exports = Usuario;
   }
 
   testConnection();
+

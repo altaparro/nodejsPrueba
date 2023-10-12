@@ -7,15 +7,14 @@ const app = require("../app/app");
 
 const verificarToken = require("../middleware/authMiddleware").verificarToken;
 
-
 productoRouter.get("/products", verificarToken, productosController.obtenerTodosLosProductos);
 
-productoRouter.get("/products/:product_id", productosController.obtenerProductoPorID);
+productoRouter.get("/products/:product_id", verificarToken, productosController.obtenerProductoPorID);
 
-productoRouter.post("/products", productosController.crearProducto);
+productoRouter.post("/products", verificarToken, productosController.crearProducto);
  
-productoRouter.put("/products/:product_id", productosController.actualizarProducto);
+productoRouter.put("/products/:product_id", verificarToken, productosController.actualizarProducto);
 
-productoRouter.delete("/products/:product_id", productosController.eliminarProducto)
+productoRouter.delete("/products/:product_id", verificarToken, productosController.eliminarProducto)
 
 module.exports = productoRouter;

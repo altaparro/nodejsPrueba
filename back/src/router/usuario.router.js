@@ -3,11 +3,11 @@ const { faker } = require("@faker-js/faker")
 const Usuarios = require("../model/usuario.model");
 const usuariosController = require('../controllers/usuario.controllers'); 
 const { request } = require("express");
+const verificarToken = require("../middleware/authMiddleware").verificarToken;
 
 
 
-
-usuarioRouter.get("/usuarios/:usuario_id", usuariosController.obtenerTodosLosUsuarios);
+usuarioRouter.get("/usuarios", verificarToken, usuariosController.obtenerTodosLosUsuarios);
 
 usuarioRouter.get("/usuarios/:usuario_id", usuariosController.obtenerUsuarioPorID);
 
