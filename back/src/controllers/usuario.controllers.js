@@ -7,7 +7,7 @@ async function crearUsuario(req, res) {
         await Usuarios.sync();
         const createUsuario = await Usuarios.create({
             usuario: dataUsuarios.usuario,
-            contraseña: dataUsuarios.contraseña,
+            password: dataUsuarios.password,
             email: dataUsuarios.email,
         });
         res.status(201).json({
@@ -60,6 +60,7 @@ async function obtenerUsuarioPorID(req, res) {
 
 
 async function obtenerTodosLosUsuarios(req, res) {
+    const userId = req.userId;
     try {
         const usuarios = await Usuarios.findAll();
 
@@ -79,19 +80,20 @@ async function obtenerTodosLosUsuarios(req, res) {
 }
 
 async function actualizarUsuario(req, res) {
-    try {
-        const id = req.params.usuario_id;
-        const dataUsuarios = req.body;
+    const userId = req.userId; // Obten el ID del usuario autenticado desde el token
+    console.log(userId);
+    const dataUsuarios = req.body;
 
+    try {
         const [updateCount] = await Usuarios.update(
             {
                 usuario: dataUsuarios.usuario,
-                contraseña: dataUsuarios.contraseña,
+                password: dataUsuarios.password,
                 email: dataUsuarios.email,
             },
             {
                 where: {
-                    usuario_id: id,
+                    usuario_id: userId, // Utiliza el ID del usuario del token
                 },
             }
         );

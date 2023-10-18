@@ -9,14 +9,12 @@ const verificarToken = require("../middleware/authMiddleware").verificarToken;
 
 usuarioRouter.get("/usuarios", verificarToken, usuariosController.obtenerTodosLosUsuarios);
 
-usuarioRouter.get("/usuarios/:usuario_id", usuariosController.obtenerUsuarioPorID);
+usuarioRouter.get("/usuarios/:usuario_id", verificarToken, usuariosController.obtenerUsuarioPorID);
 
-usuarioRouter.post("/usuarios", usuariosController.crearUsuario);
+usuarioRouter.post("/usuarios", verificarToken, usuariosController.crearUsuario);
 
-usuarioRouter.post("/usuarios", usuariosController.actualizarUsuario);
+usuarioRouter.put("/usuarios", verificarToken, usuariosController.actualizarUsuario);
 
-// router2.patch    faltaria hacer un patch
-
-usuarioRouter.post("/usuarios", usuariosController.eliminarUsuario);
+usuarioRouter.delete("/usuarios", verificarToken, usuariosController.eliminarUsuario);
 
 module.exports = usuarioRouter;

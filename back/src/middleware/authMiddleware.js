@@ -19,7 +19,12 @@ function verificarToken(req, res, next) {
                 message: 'El token no es válido'
             });
         } else {
-            req.decoded = decoded;
+            // Accede al ID del usuario desglosando el token en su parte de id 
+            const userId = decoded.userId;
+
+            // Almacena el ID del usuario en el objeto 'req' para su uso en las rutas protegidas
+            req.userId = userId;
+            
             next();
         }
     });

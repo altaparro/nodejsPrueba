@@ -32,7 +32,8 @@ app.use("/api/v1", productoRouter);
 
 app.use("/api/v1", usuarioRouter);
 
-//falta pegar en la base y traer usuario y contraseña del mismo.
+// aca logueamos, generando un token en el cual incluimos el id para 
+// luego al realizar cada consulta pida el id y actualice al usuario correcto
 
 app.post("/login", async (req, res) => {
   const usuariosBase = await Usuario.findAll({
@@ -41,12 +42,20 @@ app.post("/login", async (req, res) => {
     },
   });
   console.log(usuariosBase);
-  if (usuariosBase.length > 0) {
-    const usuarioBase = usuariosBase[0]; // Obtén el primer usuario que coincida
+  if (!req.body.usuario.trim() || !req.body.password.trim()){
+    res.json({
+      message: "Complete los campos",
+    });
+  }else if (usuariosBase.length > 0) {
+    const usuarioBase = usuariosBase[0]; // obtener el primer usuario que coincida ya que  findAll devuelve un vector con los usuarios
     if (req.body.usuario === usuarioBase.usuario && req.body.password === usuarioBase.password) {
+      const userId = usuarioBase.usuario_id; //obtengo el id del usuario
+      console.log("userID:", userId);
       const payload = {
+        userId: userId,  // aca incluyo el id en el payload el cual luego se enviara por parametro en la generacion del token
         check: true,
       };
+      console.log("payload:", payload);
       const token = jwt.sign(payload, app.get("key"), {
         expiresIn: "30m",
       });
@@ -64,6 +73,7 @@ app.post("/login", async (req, res) => {
       message: "Usuario no encontrado",
     });
   }
+  
 });
 
 module.exports = app;
