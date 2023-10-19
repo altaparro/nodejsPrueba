@@ -30,6 +30,10 @@ Usuario.init(
       type: DataTypes.STRING,
       allowNull: false, // no puede ser nulo
     },
+    rol: {
+      type: DataTypes.INTEGER,  
+      allowNull: false,
+    }
    
   },
   {
