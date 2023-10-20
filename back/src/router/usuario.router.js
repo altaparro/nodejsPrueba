@@ -19,7 +19,7 @@ const obtenerPermisos = require('../permisos/permisos');
 
 usuarioRouter.get("/usuarios", verificarToken, obtenerPermisos(permisoObtenerTodos), usuariosController.obtenerTodosLosUsuarios);
 
-usuarioRouter.get("/usuarios/:usuario_id", obtenerPermisos(permisoObtenerPorID), verificarToken, usuariosController.obtenerUsuarioPorID);
+usuarioRouter.get("/usuarios/:usuario_id",  verificarToken, obtenerPermisos(permisoObtenerPorID), usuariosController.obtenerUsuarioPorID);
 
 usuarioRouter.post("/usuarios", verificarToken, obtenerPermisos(permisoCrear), usuariosController.crearUsuario);
 
