@@ -1,10 +1,59 @@
 const Usuarios = require("../model/usuario.model");
 const bcrypt = require("bcrypt");
+const Usuario = require("../model/usuario.model");
+const jwt = require("jsonwebtoken");
+const express = require("express");
+const app = express();
+
+const keys = require("../settings/keys");
+app.set("key", keys.key);
+
+async function login(req, res) {
+  
+    const usuariosBase = await Usuario.findAll({
+      where: {
+        usuario: req.body.usuario,
+      },
+    });
+    if (usuariosBase.length > 0) {
+      const usuarioBase = usuariosBase[0];
+      const passwordMatch = await bcrypt.compare(
+        req.body.password,
+        usuarioBase.password
+      );
+
+      if (passwordMatch) {
+        const userId = usuarioBase.usuario_id;
+        const payload = {
+          userId: userId,
+          check: true,
+        };
+        const token = jwt.sign(payload, app.get("key"), {
+          expiresIn: "30m",
+        });
+        res.json({
+          message: "Autenticación exitosa",
+          success: true,
+          token: token,
+        });
+      } else {
+        res.json({
+          message: "Contraseña incorrecta",
+        });
+      }
+    } else {
+      res.json({
+        message: "Usuario no encontrado",
+      });
+    }
+  
+};
+
 
 async function crearUsuario(req, res) {
   try {
     const dataUsuarios = req.body;
-
+    const rolCliente = 2;
     // Verificar si el usuario o el email ya existen, recorriendo la base
     const usuarioExistente = await Usuarios.findOne({
       where: { usuario: dataUsuarios.usuario },
@@ -28,7 +77,7 @@ async function crearUsuario(req, res) {
         usuario: dataUsuarios.usuario,
         password: hashedPassword,
         email: dataUsuarios.email,
-        rol: dataUsuarios.rol,
+        rol: rolCliente,
       });
 
       res.status(201).json({
@@ -230,4 +279,5 @@ module.exports = {
   actualizarUsuario,
   actualizarUsuarioPorID,
   eliminarUsuario,
+  login,
 };
