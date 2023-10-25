@@ -14,14 +14,14 @@ const permisoObtenerTodos = "obtenerTodosLosProductos";
 const permisoObtenerPorID = "obtenerProductoPorID";
 const permisoEliminar = "eliminarProducto";
 
-productoRouter.get("/products", verificarToken, obtenerPermisos(permisoObtenerTodos), productosController.obtenerTodosLosProductos);
+productoRouter.get("/products/obtenerTodosLosProductos", verificarToken, obtenerPermisos(permisoObtenerTodos), productosController.obtenerTodosLosProductos);
 
-productoRouter.get("/products/:product_id", verificarToken, obtenerPermisos(permisoObtenerPorID), productosController.obtenerProductoPorID);
+productoRouter.get("/products/obtenerProductoPorID", verificarToken, obtenerPermisos(permisoObtenerPorID), productosController.obtenerProductoPorID);
 
-productoRouter.post("/products", verificarToken, obtenerPermisos(permisoCrear), productosController.crearProducto);
+productoRouter.post("/products/crearProducto", verificarToken, obtenerPermisos(permisoCrear), productosController.crearProducto);
  
-productoRouter.put("/products/:product_id", verificarToken, obtenerPermisos(permisoActualizar), productosController.actualizarProducto);
+productoRouter.put("/products/actualizarProducto", verificarToken, obtenerPermisos(permisoActualizar), productosController.actualizarProducto);
 
-productoRouter.delete("/products/:product_id", verificarToken, obtenerPermisos(permisoEliminar), productosController.eliminarProducto)
+productoRouter.delete("/products/eliminarProducto", verificarToken, obtenerPermisos(permisoEliminar), productosController.eliminarProducto)
 
 module.exports = productoRouter;

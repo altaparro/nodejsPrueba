@@ -144,6 +144,52 @@ async function actualizarUsuario(req, res) {
   }
 }
 
+async function actualizarUsuarioPorID(req, res) {
+ 
+  
+  const dataUsuarios = req.body;
+  const hashedPassword = await bcrypt.hash(dataUsuarios.password, 8);
+
+  try {
+    const [updateCount] = await Usuarios.update(
+      {
+        usuario_id: dataUsuarios.usuario_id,
+        usuario: dataUsuarios.usuario,
+        password: hashedPassword,
+        email: dataUsuarios.email,
+        rol: dataUsuarios.rol,
+      },
+      {
+        where: {
+          usuario_id: dataUsuarios.usuario_id, 
+        },
+      }
+    );
+
+    if (updateCount === 0) {
+      return res.status(404).json({
+        ok: false,
+        status: 404,
+        message: "Usuario no encontrado",
+      });
+    }
+
+    res.status(200).json({
+      ok: true,
+      status: 200,
+      message: "Usuario actualizado correctamente",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      ok: false,
+      status: 500,
+      message: "Error al actualizar el usuario",
+    });
+  }
+}
+
+
 async function eliminarUsuario(req, res) {
   try {
     const id = req.params.usuario_id;
@@ -182,5 +228,6 @@ module.exports = {
   obtenerUsuarioPorID,
   obtenerTodosLosUsuarios,
   actualizarUsuario,
+  actualizarUsuarioPorID,
   eliminarUsuario,
 };

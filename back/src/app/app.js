@@ -10,11 +10,15 @@ const Usuario = require("../model/usuario.model");
 
 const app = express();
 
+const cors = require("cors");
+
 const jwt = require("jsonwebtoken");
 
 const keys = require("../settings/keys");
 
 const bcrypt = require("bcrypt");
+
+app.use(cors());
 
 app.set("key", keys.key);
 
@@ -40,7 +44,7 @@ app.use("/api/v1", usuarioRouter);
 app.post("/login", async (req, res) => {
   if (!req.body.usuario.trim() || !req.body.password.trim()) {
     res.json({
-      message: "Complete los campos",
+      message: "Complete los campos.",
     });
   } else {
     const usuariosBase = await Usuario.findAll({
@@ -66,6 +70,7 @@ app.post("/login", async (req, res) => {
         });
         res.json({
           message: "Autenticación exitosa",
+          success: true,
           token: token,
         });
       } else {

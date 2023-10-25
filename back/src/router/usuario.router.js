@@ -6,6 +6,7 @@ const { request } = require("express");
 
 const permisoCrear = "crearUsuario"; // aca defino una constante con el nombre del controlador de la ruta, y la envio a permisos.js por parametro
 const permisoActualizar = "actualizarUsuario";
+const permisoActualizarPorID = "actualizarUsuarioPorID"
 const permisoObtenerTodos = "obtenerTodosLosUsuarios";
 const permisoObtenerPorID = "obtenerUsuarioPorID";
 const permisoEliminar = "eliminarUsuario";
@@ -17,14 +18,16 @@ const obtenerPermisos = require('../permisos/permisos');
 
 // RUTAS:
 
-usuarioRouter.get("/usuarios", verificarToken, obtenerPermisos(permisoObtenerTodos), usuariosController.obtenerTodosLosUsuarios);
+usuarioRouter.get("/usuarios/obtenerTodosLosUsuarios", verificarToken, obtenerPermisos(permisoObtenerTodos), usuariosController.obtenerTodosLosUsuarios);
 
-usuarioRouter.get("/usuarios/:usuario_id",  verificarToken, obtenerPermisos(permisoObtenerPorID), usuariosController.obtenerUsuarioPorID);
+usuarioRouter.get("/usuarios/obtenerUsuarioPorID",  verificarToken, obtenerPermisos(permisoObtenerPorID), usuariosController.obtenerUsuarioPorID);
 
-usuarioRouter.post("/usuarios", verificarToken, obtenerPermisos(permisoCrear), usuariosController.crearUsuario);
+usuarioRouter.post("/usuarios/crearUsuario", verificarToken, obtenerPermisos(permisoCrear), usuariosController.crearUsuario);
 
-usuarioRouter.put("/usuarios", verificarToken, obtenerPermisos(permisoActualizar), usuariosController.actualizarUsuario);
+usuarioRouter.put("/usuarios/actualizarUsuario", verificarToken, obtenerPermisos(permisoActualizar), usuariosController.actualizarUsuario);
 
-usuarioRouter.delete("/usuarios", verificarToken, obtenerPermisos(permisoEliminar), usuariosController.eliminarUsuario);
+usuarioRouter.put("/usuarios/actualizarUsuarioPorID", verificarToken, obtenerPermisos(permisoActualizarPorID), usuariosController.actualizarUsuarioPorID);
+
+usuarioRouter.delete("/usuarios/eliminarUsuario", verificarToken, obtenerPermisos(permisoEliminar), usuariosController.eliminarUsuario);
 
 module.exports = usuarioRouter;

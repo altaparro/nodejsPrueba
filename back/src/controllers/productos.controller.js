@@ -27,6 +27,7 @@ async function crearProducto(req, res) {
             product_name: dataProducts.product_name,
             price: dataProducts.price,
             is_stock: dataProducts.is_stock,
+            cantidad: dataProducts.cantidad,
         });
         res.status(201).json({
             ok: true,
@@ -86,6 +87,7 @@ async function actualizarProducto(req, res) {
                 product_name: dataProducts.product_name,
                 price: dataProducts.price,
                 is_stock: dataProducts.is_stock,
+                cantidad: dataProducts.cantidad,
             },
             {
                 where: {

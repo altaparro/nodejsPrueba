@@ -27,6 +27,10 @@ Product.init(
     is_stock: {
       type: DataTypes.BOOLEAN,
     },
+    cantidad: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   },
   {
     sequelize,
