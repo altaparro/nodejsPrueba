@@ -28,6 +28,8 @@ async function crearProducto(req, res) {
             price: dataProducts.price,
             is_stock: dataProducts.is_stock,
             cantidad: dataProducts.cantidad,
+            tipo: dataProducts.tipo,
+            proveedor: dataProducts.proveedor
         });
         res.status(201).json({
             ok: true,
@@ -88,6 +90,8 @@ async function actualizarProducto(req, res) {
                 price: dataProducts.price,
                 is_stock: dataProducts.is_stock,
                 cantidad: dataProducts.cantidad,
+                tipo: dataProducts.tipo,
+                proveedor: dataProducts.proveedor
             },
             {
                 where: {

@@ -31,6 +31,14 @@ Product.init(
       type: DataTypes.INTEGER,
       allowNull: false,
     },
+    tipo: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    proveedor: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   },
   {
     sequelize,

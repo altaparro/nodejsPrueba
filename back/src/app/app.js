@@ -6,6 +6,8 @@ const productoRouter = require("../router/product.router");
 
 const usuarioRouter = require("../router/usuario.router");
 
+const proveedorRouter = require("../router/proveedor.router");
+
 const app = express();
 
 const cors = require("cors");
@@ -29,6 +31,8 @@ app.use(express.json());
 app.use("/api/v1", productoRouter);
 
 app.use("/api/v1", usuarioRouter);
+
+app.use("/api/v1", proveedorRouter);
 
 
 module.exports = app;
