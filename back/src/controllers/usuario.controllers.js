@@ -4,51 +4,49 @@ const Usuario = require("../model/usuario.model");
 const jwt = require("jsonwebtoken");
 const express = require("express");
 const app = express();
+const crypto = require("crypto");
+const nodemailer = require("nodemailer");
 
 const keys = require("../settings/keys");
-app.set("key", keys.key);
 
 async function login(req, res) {
-  
-    const usuariosBase = await Usuario.findAll({
-      where: {
-        usuario: req.body.usuario,
-      },
-    });
-    if (usuariosBase.length > 0) {
-      const usuarioBase = usuariosBase[0];
-      const passwordMatch = await bcrypt.compare(
-        req.body.password,
-        usuarioBase.password
-      );
+  const usuariosBase = await Usuario.findAll({
+    where: {
+      usuario: req.body.usuario,
+    },
+  });
+  if (usuariosBase.length > 0) {
+    const usuarioBase = usuariosBase[0];
+    const passwordMatch = await bcrypt.compare(
+      req.body.password,
+      usuarioBase.password
+    );
 
-      if (passwordMatch) {
-        const userId = usuarioBase.usuario_id;
-        const payload = {
-          userId: userId,
-          check: true,
-        };
-        const token = jwt.sign(payload, app.get("key"), {
-          expiresIn: "30m",
-        });
-        res.json({
-          message: "Autenticación exitosa",
-          success: true,
-          token: token,
-        });
-      } else {
-        res.json({
-          message: "Contraseña incorrecta",
-        });
-      }
+    if (passwordMatch) {
+      const userId = usuarioBase.usuario_id;
+      const payload = {
+        userId: userId,
+        check: true,
+      };
+      const token = jwt.sign(payload, keys.key, {
+        expiresIn: "30m",
+      });
+      res.json({
+        message: "Autenticación exitosa",
+        success: true,
+        token: token,
+      });
     } else {
       res.json({
-        message: "Usuario no encontrado",
+        message: "Contraseña incorrecta",
       });
     }
-  
-};
-
+  } else {
+    res.json({
+      message: "Usuario no encontrado",
+    });
+  }
+}
 
 async function crearUsuario(req, res) {
   try {
@@ -59,8 +57,8 @@ async function crearUsuario(req, res) {
       where: { usuario: dataUsuarios.usuario },
     });
     const emailExistente = await Usuarios.findOne({
-        where: { email: dataUsuarios.email },
-      });
+      where: { email: dataUsuarios.email },
+    });
 
     if (usuarioExistente || emailExistente) {
       return res.status(409).json({
@@ -194,8 +192,6 @@ async function actualizarUsuario(req, res) {
 }
 
 async function actualizarUsuarioPorID(req, res) {
- 
-  
   const dataUsuarios = req.body;
   const hashedPassword = await bcrypt.hash(dataUsuarios.password, 8);
 
@@ -210,7 +206,7 @@ async function actualizarUsuarioPorID(req, res) {
       },
       {
         where: {
-          usuario_id: dataUsuarios.usuario_id, 
+          usuario_id: dataUsuarios.usuario_id,
         },
       }
     );
@@ -237,7 +233,6 @@ async function actualizarUsuarioPorID(req, res) {
     });
   }
 }
-
 
 async function eliminarUsuario(req, res) {
   try {
@@ -272,6 +267,131 @@ async function eliminarUsuario(req, res) {
   }
 }
 
+//funcion enviar email para restaurar pass
+function iniciarTransporter () {
+  return nodemailer.createTransport({
+    service: 'smtp',
+    port: 25,
+    host: '172.16.1.203',
+    tls: {
+      rejectUnauthorized: false
+    }
+  })
+}
+
+
+function enviarEmail(email, token){
+  const transporter = iniciarTransporter();
+
+  const link = `http://localhost:3001/api/v1/reestablecerPass/${token}`;
+  const mailOptions = {
+    from: '"Contadurias Prueba" <noreply2@spb.gba.gov.ar>',
+    to: email,
+    subject: 'Reestablecer contraseña',
+    text: link
+  }
+  
+  
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Error al enviar el correo electrónico:', error);
+    } else {
+      console.log('Correo electrónico enviado:', info.response);
+    }
+  });
+  
+}
+
+
+// controlador para generar token y reestablecer contraseña
+async function enviarToken(req, res, next) {
+  const emailBody = req.body.email;
+  let usuario = "";
+
+  try {
+    usuario = await Usuarios.findOne({
+      where: {
+        email: emailBody,
+      },
+    }); 
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      ok: false,
+      status: 500,
+      message: "Error al obtener el email",
+    });
+  }
+
+  // Genera el token
+  if (!usuario) {
+    return res.status(404).json({
+      ok: false,
+      message: "Usuario no encontrado",
+    });
+  }else{
+    const userId = usuario.usuario_id;
+    const payload = {
+      userId: userId,
+      check: true,
+    };
+    const token = jwt.sign(payload, keys.key, {
+      expiresIn: "30m",
+    });
+    enviarEmail(emailBody, token)
+  
+    res.json({
+      message: "Se le ha enviado un email con un link para restaurar la contraseña",
+      success: true
+    });
+
+  }
+ 
+}
+
+async function actualizarPass(req, res) {
+  const nuevaPassword = req.body.password;
+  const hashedPassword = await bcrypt.hash(nuevaPassword, 8);
+  const userId = req.userId;
+  // Busca al usuario por el token
+  const usuario = await Usuario.findOne({
+    where: {
+      usuario_id: userId,
+    },
+  });
+
+  if (!usuario) {
+    return res.redirect("/api/v1/reestablecer");
+  }
+
+  try {
+    // Actualiza la contraseña del usuario en la base de datos
+    await Usuarios.update(
+      {
+        password: hashedPassword,
+      },
+      {
+        where: {
+          usuario_id: userId,
+        },
+      }
+    );
+
+    res.status(201).json({
+      ok: true,
+      message: "Contraseña actualizada con éxito",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      ok: false,
+      status: 500,
+      message: "Error al actualizar la contraseña",
+    });
+  }
+}
+
 module.exports = {
   crearUsuario,
   obtenerUsuarioPorID,
@@ -280,4 +400,6 @@ module.exports = {
   actualizarUsuarioPorID,
   eliminarUsuario,
   login,
+  enviarToken,
+  actualizarPass,
 };

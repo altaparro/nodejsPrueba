@@ -3,10 +3,10 @@ const proveedoresController = require("../controllers/proveedores.controller")
 const verificarToken = require("../middleware/authMiddleware").verificarToken;
 const app = require("../app/app");
 const { request } = require("express");
-const permisosProveedores = require('../permisos/permisos');
+const { permisosProveedores } = require('../permisos/permisosProveedores');
 
 
-proveedorRouter.post("/proveedores/crearProveedor", verificarToken, permisosProveedores,proveedoresController.crearProveedor);
+proveedorRouter.post("/proveedores/crearProveedor", verificarToken, permisosProveedores(), proveedoresController.crearProveedor);
 
 proveedorRouter.put("/proveedores/actualizarProveedor", verificarToken, proveedoresController.actualizarProveedor);
 
