@@ -28,6 +28,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.1.0",
+    "dotenv": "^16.3.1",
     "nodeman": "^1.1.2"
   }
 }

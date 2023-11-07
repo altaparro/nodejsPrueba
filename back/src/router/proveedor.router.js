@@ -9,11 +9,11 @@ const validacionesProveedores = require('../validaciones/proveedoresValidaciones
 
 proveedorRouter.post("/proveedores/crearProveedor", verificarToken, permisosProveedores(),  validacionesProveedores.validacionesProveedores ,proveedoresController.crearProveedor);
 
-proveedorRouter.put("/proveedores/actualizarProveedor", verificarToken, proveedoresController.actualizarProveedor);
+proveedorRouter.put("/proveedores/actualizarProveedor", verificarToken, permisosProveedores(), proveedoresController.actualizarProveedor);
 
-proveedorRouter.get("/proveedores/obtenerTodosLosProveedores", verificarToken, proveedoresController.obtenerTodosLosProveedores);
+proveedorRouter.get("/proveedores/obtenerTodosLosProveedores", verificarToken, permisosProveedores(), proveedoresController.obtenerTodosLosProveedores);
  
-proveedorRouter.delete("/proveedores/eliminarProveedor", verificarToken, proveedoresController.eliminarProveedor);
+proveedorRouter.delete("/proveedores/eliminarProveedor", verificarToken, permisosProveedores(), proveedoresController.eliminarProveedor);
 
 
 module.exports = proveedorRouter;
