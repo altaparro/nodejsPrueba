@@ -4,9 +4,10 @@ const verificarToken = require("../middleware/authMiddleware").verificarToken;
 const app = require("../app/app");
 const { request } = require("express");
 const { permisosProveedores } = require('../permisos/permisosProveedores');
+const validacionesProveedores = require('../validaciones/proveedoresValidaciones');
 
 
-proveedorRouter.post("/proveedores/crearProveedor", verificarToken, permisosProveedores(), proveedoresController.crearProveedor);
+proveedorRouter.post("/proveedores/crearProveedor", verificarToken, permisosProveedores(),  validacionesProveedores.validacionesProveedores ,proveedoresController.crearProveedor);
 
 proveedorRouter.put("/proveedores/actualizarProveedor", verificarToken, proveedoresController.actualizarProveedor);
 

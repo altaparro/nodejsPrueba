@@ -1,8 +1,6 @@
 const jwt = require("jsonwebtoken");
 const Usuarios = require("../model/usuario.model");
 
-
-
 function permisosProveedores() {
   
     const parseoAdmin = 1;

@@ -2,9 +2,6 @@ const Usuarios = require("../model/usuario.model");
 const bcrypt = require("bcrypt");
 const Usuario = require("../model/usuario.model");
 const jwt = require("jsonwebtoken");
-const express = require("express");
-const app = express();
-const crypto = require("crypto");
 const nodemailer = require("nodemailer");
 
 const keys = require("../settings/keys");

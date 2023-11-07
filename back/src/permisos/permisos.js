@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-const Usuarios = require("../model/usuario.model");
 const sequelize = require("../model/usuario.model").sequelize;
 
 function obtenerPermisos(permisoRequerido) {

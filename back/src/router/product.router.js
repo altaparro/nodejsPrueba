@@ -1,13 +1,9 @@
 const productoRouter = require("express").Router()
-const { faker } = require("@faker-js/faker")
 const Products = require("../model/product.model");
-const productosController = require("../controllers/productos.controller")
-const { request } = require("express");
-const app = require("../app/app");
+const productosController = require("../controllers/productos.controller");
 const verificarToken = require("../middleware/authMiddleware").verificarToken;
-const obtenerPermisos = require('../permisos/permisos');
 const permisos = require('../permisos/permisos');
-
+const { validacionesProductos } = require('../validaciones/productosValidaciones')
 
 const permisoCrear = "crearProducto"; // aca defino una constante con el nombre del controlador de la ruta, y la envio a permisos.js por parametro
 const permisoActualizar = "actualizarProducto";
@@ -19,7 +15,7 @@ productoRouter.get("/products/obtenerTodosLosProductos", verificarToken, permiso
 
 productoRouter.get("/products/obtenerProductoPorID", verificarToken, permisos.obtenerPermisos(permisoObtenerPorID), productosController.obtenerProductoPorID);
 
-productoRouter.post("/products/crearProducto", verificarToken, permisos.obtenerPermisos(permisoCrear), productosController.crearProducto);
+productoRouter.post("/products/crearProducto", verificarToken, permisos.obtenerPermisos(permisoCrear), validacionesProductos, productosController.crearProducto);
  
 productoRouter.put("/products/actualizarProducto", verificarToken, permisos.obtenerPermisos(permisoActualizar), productosController.actualizarProducto);
 

@@ -1,10 +1,6 @@
-const { Sequelize, Model, DataTypes } = require("sequelize");
+const { Model, DataTypes } = require("sequelize");
 
-const sequelize = new Sequelize("product_test", "root", "", {
-  host: "localhost",
-  dialect: "mysql",
-  port: 3306,
-});
+const sequelize = require('../conexion/conexion');
 
 class Product extends Model {}
 
@@ -46,19 +42,5 @@ Product.init(
   }
 );
 
-
-
 module.exports = Product;
 
-// testeando la conexion:
-
-//   async function testConnection(){
-//     try {
-//         await sequelize.authenticate()
-//         console.log("conexion correcta");
-//       } catch (err) {
-//         console.error("algo salio mal", err);
-//       }
-//   }
-
-//   testConnection();

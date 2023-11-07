@@ -1,11 +1,6 @@
-const { Sequelize, Model, DataTypes } = require("sequelize");
+const {  Model, DataTypes } = require("sequelize");
 
-const sequelize = new Sequelize("product_test", "root", "", {
-  host: "localhost",
-  dialect: "mysql",
-  port: 3306,
-});
-
+const sequelize = require('../conexion/conexion');
 class Proveedores extends Model {}
 
 Proveedores.init(

@@ -1,17 +1,12 @@
+// Configurando la app:
+
 const express = require("express");
-
 const morgan = require("morgan");
-
 const productoRouter = require("../router/product.router");
-
 const usuarioRouter = require("../router/usuario.router");
-
 const proveedorRouter = require("../router/proveedor.router");
-
 const app = express();
-
 const cors = require("cors");
-
 const keys = require("../settings/keys");
 
 app.use(cors());

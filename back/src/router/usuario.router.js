@@ -1,5 +1,3 @@
-// IMPORTACIONES
-
 const usuarioRouter = require("express").Router()
 const { faker } = require("@faker-js/faker")
 const Usuarios = require("../model/usuario.model");
@@ -11,7 +9,10 @@ const { validacionesInputs, validacionLogin } = require('../validaciones/usuario
 const permisos = require('../permisos/permisos');
 const { capturarToken } = require("../middleware/tokenMiddleware");
 
-const permisoCrear = "crearUsuario"; // aca defino una constante con el nombre del controlador de la ruta, y la envio a permisos.js por parametro
+// aca defino una constante con el nombre del controlador de la ruta, y la envio a permisos.js por parametro con el fin
+// de saber que permiso tiene el usuario logueado:
+
+const permisoCrear = "crearUsuario";
 const permisoActualizar = "actualizarUsuario";
 const permisoActualizarPorID = "actualizarUsuarioPorID"
 const permisoObtenerTodos = "obtenerTodosLosUsuarios";
@@ -40,4 +41,4 @@ usuarioRouter.post('/reestablecer', usuariosController.enviarToken);
 usuarioRouter.post("/reestablecerPass/:token", capturarToken, usuariosController.actualizarPass);
 
 
-module.exports = usuarioRouter;
+module.exports = usuarioRouter; 

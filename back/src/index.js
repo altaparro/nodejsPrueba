@@ -1,3 +1,5 @@
+// Donde inicia el sistema:
+
 const app = require("./app/app");
 
 const port = process.env.PORT || 3001;

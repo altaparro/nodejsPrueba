@@ -10,49 +10,46 @@ const validateResult = (req, res, next) => {
     }
 }
 
-// Validaciones de los inputs para cargarUsuario:
+// validaciones de los input:
 
-const validacionesInputs = [
-    check('email')
+const validacionesProductos = [
+    check('product_name')
     .exists()
     .not()
     .isEmpty()
-    .isEmail(),
-    check('usuario')
+    .isAlphanumeric()
+    .isLength({min: 3})
+    .withMessage('El nombre debe tener al menos 3 caracteres'),
+    check('price')
+    .exists()
+    .not()
+    .isEmpty()
+    .isNumeric(),
+    check('is_stock')
+    .exists()
+    .not()
+    .isEmpty()
+    .isNumeric(),
+    check('cantidad')
+    .exists()
+    .not()
+    .isEmpty()
+    .isNumeric(),
+    check('tipo')
     .exists()
     .not()
     .isEmpty()
     .isAlphanumeric(),
-    check('password')
+    check('proveedor')
     .exists()
     .not()
     .isEmpty()
     .isAlphanumeric(),
- 
 
     (req, res, next) => {
        validateResult(req, res, next)
     }
  ]
 
-// Validaciones de los input para loguearse:
 
-const validacionLogin = [
-    check('usuario')
-    .exists()
-    .not()
-    .isEmpty()
-    .isAlphanumeric(),
-    check('password')
-    .exists()
-    .not()
-    .isEmpty()
-    .isAlphanumeric(),
-
-    (req, res, next) => {
-        validateResult(req, res, next)
-     }
-]
-
-
- module.exports = { validacionesInputs, validacionLogin }
+ module.exports = { validacionesProductos };
