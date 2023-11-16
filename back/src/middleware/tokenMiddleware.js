@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
 
+// Este es el middleware para restaurarPass
+
 function capturarToken(req, res, next) {
     let token = req.params.token;
 

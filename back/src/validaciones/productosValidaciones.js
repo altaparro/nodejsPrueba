@@ -17,15 +17,9 @@ const validacionesProductos = [
     .exists()
     .not()
     .isEmpty()
-    .isAlphanumeric()
     .isLength({min: 3})
     .withMessage('El nombre debe tener al menos 3 caracteres'),
     check('price')
-    .exists()
-    .not()
-    .isEmpty()
-    .isNumeric(),
-    check('is_stock')
     .exists()
     .not()
     .isEmpty()

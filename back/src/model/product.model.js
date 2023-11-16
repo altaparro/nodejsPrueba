@@ -20,9 +20,6 @@ Product.init(
       type: DataTypes.FLOAT(10, 2),
       allowNull: false,
     },
-    is_stock: {
-      type: DataTypes.BOOLEAN,
-    },
     cantidad: {
       type: DataTypes.INTEGER,
       allowNull: false,

@@ -22,6 +22,7 @@ const permisoEliminar = "eliminarUsuario";
 
 // RUTAS:
 
+
 usuarioRouter.get("/usuarios/obtenerTodosLosUsuarios", verificarToken, permisos.obtenerPermisos(permisoObtenerTodos), usuariosController.obtenerTodosLosUsuarios);
 
 usuarioRouter.get("/usuarios/obtenerUsuarioPorID",  verificarToken, permisos.obtenerPermisos(permisoObtenerPorID),usuariosController.obtenerUsuarioPorID);

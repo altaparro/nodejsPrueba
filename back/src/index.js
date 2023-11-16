@@ -1,13 +1,11 @@
 // Donde inicia el sistema:
 
-// ESTE IF SERIA PARA CUANDO PASA A PRODUCCION:
-// if (process.env.NODE_ENV =! 'production'){
-//     require('dotenv').config();
-// }
-
-
 require('dotenv').config();
 const app = require("./app/app");
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger-output.json');
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 const port = process.env.PORT;
 

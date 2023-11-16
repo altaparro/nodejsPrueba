@@ -11,6 +11,7 @@ const permisoObtenerTodos = "obtenerTodosLosProductos";
 const permisoObtenerPorID = "obtenerProductoPorID";
 const permisoEliminar = "eliminarProducto";
 
+
 productoRouter.get("/products/obtenerTodosLosProductos", verificarToken, permisos.obtenerPermisos(permisoObtenerTodos), productosController.obtenerTodosLosProductos);
 
 productoRouter.get("/products/obtenerProductoPorID", verificarToken, permisos.obtenerPermisos(permisoObtenerPorID), productosController.obtenerProductoPorID);
@@ -20,5 +21,7 @@ productoRouter.post("/products/crearProducto", verificarToken, permisos.obtenerP
 productoRouter.put("/products/actualizarProducto", verificarToken, permisos.obtenerPermisos(permisoActualizar), productosController.actualizarProducto);
 
 productoRouter.delete("/products/eliminarProducto", verificarToken, permisos.obtenerPermisos(permisoEliminar), productosController.eliminarProducto)
+
+productoRouter.get("/productos/sarasa", function (req, res){res.status(200).json({message: "asqdaddasdd"})})
 
 module.exports = productoRouter;
