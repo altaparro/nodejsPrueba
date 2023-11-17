@@ -5,7 +5,7 @@
       title: 'Contadurias Prueba',
       description: 'End points del sistema'
     },
-    host: 'localhost:6607/api/v1',
+    host: '172.16.1.219:6607/api/v1',
     tags: [
       {
         name: 'Usuarios',
